@@ -9,6 +9,7 @@ import (
 	"time"
 
 	mysql "github.com/andrelsf/apigolang/driver"
+	ph "github.com/andrelsf/apigolang/handler/http"
 	models "github.com/andrelsf/apigolang/models"
 )
 
@@ -88,30 +89,30 @@ func Ping(w http.ResponseWriter, r *http.Request) {
  * 		-d '{"name":"GOD OF WAR IV","platform":"PS4","description":"Kratos adventure in Nordic lands with his son Atreus","price":"99.90"}' \
  * 		localhost:8000
  */
-func Games(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		game := models.Game{}
+// func Games(w http.ResponseWriter, r *http.Request) {
+// 	if r.Method == http.MethodPost {
+// 		game := models.Game{}
 
-		err := json.NewDecoder(r.Body).Decode(&game)
-		if err != nil {
-			log.Fatal(err)
-		}
-		game.CreateAt = time.Now().UTC()
+// 		err := json.NewDecoder(r.Body).Decode(&game)
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+// 		game.CreateAt = time.Now().UTC()
 
-		// Handler Database start
-		// TODO
-		// fim database
-		gameJson, err := json.MarshalIndent(&game, "", "  ")
-		if err != nil {
-			log.Fatal(err)
-		}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		w.Write(gameJson)
-	} else {
-		ResponseResourceNotImplemented(w)
-	}
-}
+// 		// Handler Database start
+// 		// TODO
+// 		// fim database
+// 		gameJson, err := json.MarshalIndent(&game, "", "  ")
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+// 		w.Header().Set("Content-Type", "application/json")
+// 		w.WriteHeader(http.StatusOK)
+// 		w.Write(gameJson)
+// 	} else {
+// 		ResponseResourceNotImplemented(w)
+// 	}
+// }
 
 // Package MAIN
 func main() {
@@ -130,9 +131,10 @@ func main() {
 		os.Exit(-1)
 	}
 
+	pHander := ph.NewGameHandler(connection)
 	mux := http.NewServeMux()
 	mux.Handle("/api/ping", LoggerMiddleware(http.HandlerFunc(Ping)))
-	mux.Handle("/api/game", LoggerMiddleware(http.HandlerFunc(Games)))
+	mux.Handle("/api/game", LoggerMiddleware(http.HandlerFunc(ph.Create))
 	fmt.Println("Service is running on:", APP_PORT)
 	http.ListenAndServe(APP_PORT, mux)
 }

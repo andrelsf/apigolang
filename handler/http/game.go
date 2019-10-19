@@ -65,10 +65,24 @@ func (g *Game) Update(w http.ResponseWriter, r *http.Request) {
 
 // Retorna a game details by id
 func (g *Game) GetById(w http.ResponseWriter, r *http.Request) {
-	responseWithJSON(w, http.StatusNotImplemented, map[string]string{"message": "Resource not implemented"})
+	//TODO
+	payload, err := g.repo.GetById(r.Context(), int64(1))
+
+	if err != nil {
+		responseWithError(w, http.StatusNoContent, "Content not found")
+	}
+
+	responseWithJSON(w, http.StatusOK, payload)
 }
 
 // Remove a game by id
 func (g *Game) Delete(w http.ResponseWriter, r *http.Request) {
-	responseWithJSON(w, http.StatusNotImplemented, map[string]string{"message": "Resource not implemented"})
+	//TODO
+	_, err := g.repo.Delete(r.Context(), int64(1))
+
+	if err != nil {
+		responseWithError(w, http.StatusInternalServerError, "Error try delete by id")
+	}
+
+	responseWithJSON(w, http.StatusMovedPermanently, map[string]string{"message": "Delete successfully"})
 }
