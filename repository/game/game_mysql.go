@@ -80,8 +80,45 @@ func (m *mysqlGameRepository) GetByID(ctx context.Context, id int64) (*models.Ga
 	payload := &models.Game{}
 	if len(row) > 0 {
 		payload = row[0]
-	} else {
-		return nil, models.ErrNotFound
 	}
 	return payload, nil
+}
+
+func (m *mysqlGameRepository) Update(ctx context.Context, g *models.Game) (*models.Game, error) {
+	query := "UPDATE games SET name = '?', platform = '?', description = '?', price = '?', updateat = '?'"
+
+	stmt, err := m.Conn.PrepareContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = stmt.ExecContext(
+		ctx,
+		g.Name,
+		g.Platform,
+		g.Description,
+		g.Price,
+		g.UpdateAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return g, nil
+}
+
+func (m *mysqlGameRepository) Delete(ctx context.Context, id int64) (bool, error) {
+	query := "DELETE FROM games WHERE id = ?"
+
+	stmt, err := m.Conn.PrepareContext(ctx, query)
+	if err != nil {
+		return false, err
+	}
+
+	_, err = stmt.ExecContext(ctx, id)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
