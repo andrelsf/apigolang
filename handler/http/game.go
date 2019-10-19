@@ -66,7 +66,7 @@ func (g *Game) Update(w http.ResponseWriter, r *http.Request) {
 // Retorna a game details by id
 func (g *Game) GetById(w http.ResponseWriter, r *http.Request) {
 	//TODO
-	payload, err := g.repo.GetById(r.Context(), int64(1))
+	payload, err := g.repo.GetByID(r.Context(), int64(1))
 
 	if err != nil {
 		responseWithError(w, http.StatusNoContent, "Content not found")
