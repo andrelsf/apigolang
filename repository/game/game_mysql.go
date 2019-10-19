@@ -85,7 +85,7 @@ func (m *mysqlGameRepository) GetByID(ctx context.Context, id int64) (*models.Ga
 }
 
 func (m *mysqlGameRepository) Update(ctx context.Context, g *models.Game) (*models.Game, error) {
-	query := "UPDATE games SET name = '?', platform = '?', description = '?', price = '?', updateat = '?'"
+	query := "UPDATE games SET name = '?', platform = '?', description = '?', price = '?', updateat = '?' WHERE id = ?"
 
 	stmt, err := m.Conn.PrepareContext(ctx, query)
 	if err != nil {
@@ -99,6 +99,7 @@ func (m *mysqlGameRepository) Update(ctx context.Context, g *models.Game) (*mode
 		g.Description,
 		g.Price,
 		g.UpdateAt,
+		g.Id,
 	)
 	if err != nil {
 		return nil, err

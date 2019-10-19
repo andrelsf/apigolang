@@ -23,6 +23,20 @@ func NewGameHandler(db *driver.DB) *Game {
 	}
 }
 
+// Write JSON response format
+func responseWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+	response, _ := json.MarshalIndent(payload, "", "  ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	w.Write(response)
+}
+
+// Return error messages
+func responseWithError(w http.ResponseWriter, code int, message string) {
+	responseWithJSON(w, code, map[string]string{"message": message})
+}
+
 // Fetch all games data
 func (g *Game) Fetch(w http.ResponseWriter, r *http.Request) {
 	payload, _ := g.repo.Fetch(r.Context(), 10)
@@ -44,16 +58,17 @@ func (g *Game) Create(w http.ResponseWriter, r *http.Request) {
 	responseWithJSON(w, http.StatusCreated, map[string]string{"message": "Successfully created"})
 }
 
-// Write JSON response format
-func responseWithJSON(w http.ResponseWriter, code int, payload interface{}) {
-	response, _ := json.MarshalIndent(payload, "", "  ")
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(code)
-	w.Write(response)
+// Update a game by id
+func (g *Game) Update(w http.ResponseWriter, r *http.Request) {
+	responseWithJSON(w, http.StatusNotImplemented, map[string]string{"message": "Resource not implemented"})
 }
 
-// Return error messages
-func responseWithError(w http.ResponseWriter, code int, message string) {
-	responseWithJSON(w, code, map[string]string{"message": message})
+// Retorna a game details by id
+func (g *Game) GetByID(w http.ResponseWriter, r *http.Request) {
+	responseWithJSON(w, http.StatusNotImplemented, map[string]string{"message": "Resource not implemented"})
+}
+
+// Remove a game by id
+func (g *Game) Delete(w http.ResponseWriter, r *http.Request) {
+	responseWithJSON(w, http.StatusNotImplemented, map[string]string{"message": "Resource not implemented"})
 }
