@@ -19,9 +19,10 @@ type DB struct {
 //Database Connection ...
 var dbConn = &DB{}
 
-func ConnectSQL(host, port, uname, pass, dbname string) (*DB, error) {
+func ConnectSQL(host, port, username, pass, dbname string) (*DB, error) {
 	dataSourceName := fmt.Sprintf(
-		"root:%s@tcp(%s:%s)/%s?charset=utf8",
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8",
+		username,
 		pass,
 		host,
 		port,
