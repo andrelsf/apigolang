@@ -69,7 +69,7 @@ func (m *mysqlGameRepository) Create(ctx context.Context, g *models.Game) (int64
 	return res.LastInsertId()
 }
 
-func (m *mysqlGameRepository) GetById(ctx context.Context, id int64) (*models.Game, error) {
+func (m *mysqlGameRepository) GetByID(ctx context.Context, id int64) (*models.Game, error) {
 	query := "SELECT * FROM games WHERE id = ?"
 
 	row, err := m.fetch(ctx, query, id)

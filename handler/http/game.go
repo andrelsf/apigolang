@@ -64,7 +64,7 @@ func (g *Game) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 // Retorna a game details by id
-func (g *Game) GetById(w http.ResponseWriter, r *http.Request) {
+func (g *Game) GetByID(w http.ResponseWriter, r *http.Request) {
 	//TODO
 	payload, err := g.repo.GetByID(r.Context(), int64(1))
 
