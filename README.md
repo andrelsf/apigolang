@@ -2,6 +2,8 @@
 
 I am learning `Golang`.
 
+__Note__: `Create structure directory data/log/ for logs requests`
+
 ## Modules
 
 ```
