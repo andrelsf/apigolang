@@ -19,7 +19,7 @@ type Game struct {
 // Manager connection for new games
 func NewGameHandler(db *driver.DB) *Game {
 	return &Game{
-		repo: game.NewSQLGameRepo(db.SQL),
+		repo: game.NewSQLGameRepository(db.SQL),
 	}
 }
 
@@ -49,7 +49,8 @@ func (g *Game) Create(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&game)
 
-	_, err := g.repo.Create(r.Context(), &game) //newID
+	newID, err := g.repo.Create(r.Context(), &game)
+	log.Printf("newid: %v", newID)
 	if err != nil {
 		log.Printf("%s", err)
 		responseWithError(w, http.StatusInternalServerError, "Server error")
