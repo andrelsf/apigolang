@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	mysql "github.com/andrelsf/apigolang/driver"
 	models "github.com/andrelsf/apigolang/models"
 )
 
@@ -114,17 +115,20 @@ func Games(w http.ResponseWriter, r *http.Request) {
 
 // Package MAIN
 func main() {
-	/*dbName := os.Getenv("DB_NAME")
+	OpenLogFile(LOG_PATH)
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+
+	dbName := os.Getenv("DB_NAME")
 	dbUser := os.Getenv("DB_USER")
 	dbPass := os.Getenv("DB_PASS")
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 
 	connection, err := mysql.ConnectSQL(dbHost, dbPort, dbUser, dbPass, dbName)
-	*/
-
-	OpenLogFile(LOG_PATH)
-	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	if err != nil {
+		log.Fatal(err)
+		os.Exit(-1)
+	}
 
 	mux := http.NewServeMux()
 	mux.Handle("/api/ping", LoggerMiddleware(http.HandlerFunc(Ping)))
