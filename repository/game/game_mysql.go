@@ -9,18 +9,18 @@ import (
 )
 
 type mysqlGameRepository struct {
-	Connection *sql.DB
+	Conn *sql.DB
 }
 
 // Retorna a interface Game implementado pelo repository
 func NewSQLGameRepository(Conn *sql.DB) gameRepository.GameRepository {
 	return &mysqlGameRepository{
-		Connection: Conn,
+		Conn: Conn,
 	}
 }
 
 func (m *mysqlGameRepository) fetch(ctx context.Context, query string, args ...interface{}) ([]*models.Game, error) {
-	rows, err := m.Connection.QueryContext(ctx, query, args...)
+	rows, err := m.Conn.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (m *mysqlGameRepository) Create(ctx context.Context, g *models.Game) (int64
 	return res.LastInsertId()
 }
 
-func (m *mysqlGameRepository) GetByID(ctx context.Context, id int64) (*models.Game, error) {
+func (m *mysqlGameRepository) GetById(ctx context.Context, id int64) (*models.Game, error) {
 	query := "SELECT * FROM games WHERE id = ?"
 
 	row, err := m.fetch(ctx, query, id)

@@ -64,7 +64,7 @@ func (g *Game) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 // Retorna a game details by id
-func (g *Game) GetByID(w http.ResponseWriter, r *http.Request) {
+func (g *Game) GetById(w http.ResponseWriter, r *http.Request) {
 	responseWithJSON(w, http.StatusNotImplemented, map[string]string{"message": "Resource not implemented"})
 }
 
